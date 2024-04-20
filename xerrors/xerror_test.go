@@ -96,26 +96,26 @@ func Test_XError(t *testing.T) {
 			xErr := New(tt.app, tt.message, tt.errs...)
 
 			if !errors.Is(xErr, tt.app) {
-				t.Errorf("XError.Error() = %v, wantDTO %v", xErr, tt.app)
+				t.Errorf("actualError = %v, wantError %v", xErr, tt.app)
 			}
 
 			if tt.errs != nil {
 				for _, err := range tt.errs {
 					if !errors.Is(xErr, err) {
-						t.Errorf("XError.Error() = %v, wantDTO %v", xErr, err)
+						t.Errorf("actualError = %v, wantError %v", xErr, err)
 					}
 				}
 			}
 
 			actualDTO, err := xErr.MarshalJSON()
 			if err != nil {
-				t.Errorf("XError.MarshalJSON() error = %v", err)
+				t.Errorf("xErr.MarshalJSON() error = %v", err)
 			}
 
 			wantDTO := marshalXErrorDTO(t, tt.wantDTO)
 
 			if string(actualDTO) != string(wantDTO) {
-				t.Errorf("XError.MarshalJSON() = %v, wantDTO %v", string(actualDTO), string(wantDTO))
+				t.Errorf("actualDTO = %v, wantDTO %v", string(actualDTO), string(wantDTO))
 			}
 		})
 	}
@@ -124,7 +124,7 @@ func Test_XError(t *testing.T) {
 func marshalXErrorDTO(t *testing.T, xErr any) []byte {
 	bytes, err := json.Marshal(xErr)
 	if err != nil {
-		t.Fatalf("XError.MarshalJSON() error = %v", err)
+		t.Fatalf("json.Marshal(xErr) error = %v", err)
 	}
 	return bytes
 }
